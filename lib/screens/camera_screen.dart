@@ -1,17 +1,17 @@
+import 'image_preview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'widgets/camera_bottom_bar.dart';
-
-
-class CameraPage extends StatefulWidget {
-  const CameraPage({super.key, required this.camera});
+/// returns the preview of first avaialbe camera with bottom bar attached to itself
+class CameraScreen extends StatefulWidget {
+  const CameraScreen({super.key, required this.camera});
   final CameraDescription camera;
 
   @override
-  State<CameraPage> createState() => _CameraPageState();
+  State<CameraScreen> createState() => _CameraScreenState();
 }
 
-class _CameraPageState extends State<CameraPage> {
+class _CameraScreenState extends State<CameraScreen> {
   late CameraController _cameraController;
   late Future<void> _futureController;
 
@@ -43,7 +43,12 @@ class _CameraPageState extends State<CameraPage> {
                   try {
                     await _futureController;
                     XFile result = await _cameraController.takePicture();
-                    print("PICTURE TAKEN");
+                    if (context.mounted) {
+                      Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (c, a, s) =>
+                            ImagePreviewScreen(image: result),
+                      ));
+                    }
                   } catch (e) {
                     print(e);
                   }
@@ -52,7 +57,7 @@ class _CameraPageState extends State<CameraPage> {
             ],
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(color: Colors.black,));
         }
       },
     );

@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'camera/camera_page.dart';
+import 'screens/camera_screen.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,11 +13,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.black,
           body: FutureBuilder<List<CameraDescription>>(
         future: availableCameras(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return CameraPage(camera: snapshot.data!.first);
+            return CameraScreen(camera: snapshot.data!.first);
           }
           return Container();
         },
